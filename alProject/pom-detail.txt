@@ -1,0 +1,264 @@
+# effective-eureka
+测试代码库
+
+
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<modelVersion>4.0.0</modelVersion>
+
+    公司或者组织的唯一标志，并且配置时生成的路径也是由此生成， 如 cn.edu.ouc，maven 会将该项目打成的 jar 包放本地路径：/cn/edu/ouc 
+    <groupId>org.example</groupId>
+    本项目的唯一ID，一个groupId下面可能多个项目，就是靠artifactId来区分的 
+    <artifactId>alProject</artifactId>
+    本项目目前所处的版本号 
+    <version>1.0-SNAPSHOT</version>
+
+    打包的机制，如 pom、jar、maven-plugin、ejb、war、ear、rar和par，默认为jar 
+    <packaging>jar</packaging>
+
+
+    为 pom 定义一些常量，在 pom 中的其它地方可以直接引用这些变量。使用方式如下：${file.encoding} 
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+
+    <!--Spring Boot父工程
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.2.0</version>
+    </parent>
+
+
+    帮助定义构件输出的一些附属构件,附属构件与主构件对应，有时候需要加上classifier才能唯一的确定该构件 不能直接定义项目的classifer,因为附属构件不是项目直接默认生成的，而是由附加的插件帮助生成的 
+       <classifier>...</classifier>
+
+
+    定义本项目的依赖关系 
+    <!--一般情况下，maven是通过groupId、artifactId、version这三个元素值（俗称坐标）来检索该构件， 然后引入你的工程。如果别人想引用你现在开发的这个项目（前提是已开发完毕并发布到了远程仓库），
+    <!--就需要在他的pom文件中新建一个dependency节点，将本项目的groupId、artifactId、version写入， maven就会把你上传的jar包下载到他的本地 
+
+    <dependencies>
+
+       <dependency>
+           一般情况下，maven是通过groupId、artifactId、version这三个元素值（俗称坐标）来检索该构件， 然后引入你的工程。如果别人想引用你现在开发的这个项目（前提是已开发完毕并发布到了远程仓库），
+           就需要在他的pom文件中新建一个dependency节点，将本项目的groupId、artifactId、version写入， maven就会把你上传的jar包下载到他的本地 
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-webmvc</artifactId>
+           <version>5.1.5.RELEASE</version>
+            maven认为，程序对外部的依赖会随着程序的所处阶段和应用场景而变化，所以maven中的依赖关系有作用域(scope)的限制。 
+           scope包含如下的取值：compile（编译范围）、provided（已提供范围）、runtime（运行时范围）、test（测试范围）、system（系统范围） 
+           <scope>test</scope>
+            设置子项目是否默认继承该依赖：默认为 false，即子项目默认都继承，子项目不需要显示的引入；若为 true 则子项目必需显示的引入，与dependencyManagement里定义的依赖类似  
+           <optional>false</optional>
+            屏蔽依赖关系，使其不起作用。比如项目中使用的libA依赖某个库的1.0版，libB依赖某个库的2.0版，现在想统一使用2.0版，就应该屏蔽掉对1.0版的依赖 
+           <exclusions>
+               <exclusion>
+                   <groupId>org.slf4j</groupId>
+                   <artifactId>slf4j-api</artifactId>
+               </exclusion>
+           </exclusions>
+       </dependency>
+
+
+        <!--Web场景启动器
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+        </dependency>
+
+        <!--Spring Security场景启动器
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+    </dependencies>
+
+   <build>
+ 产生的构建的文件名，默认值是 ${artifactId}-${version} 
+       <finalName>myPorjectName</finalName>
+
+ 构建产生的所有文件存放的目录，默认为 ${basedir}/target，即项目根目录下的 target 
+       <directory>${basedir}/target</directory>
+
+当项目没有规定目标（Maven2叫做阶段（phase））时的默认值 
+必须跟命令行上的参数相同例如jar:jar，或者与某个阶段（phase）相同例如install、compile等 
+        <defaultGoal>install</defaultGoal>
+当 filtering 开关打开时，使用到的过滤器属性文件列表。 
+项目配置信息中诸如 ${spring.version} 之类的占位符会被属性文件中的实际值替换掉 
+
+
+当 filtering 开关打开时，使用到的过滤器属性文件列表。 
+项目配置信息中诸如 ${spring.version} 之类的占位符会被属性文件中的实际值替换掉 
+       <filters>
+           <filter>../alProject/src/main/resources/filter.properties</filter>
+       </filters>
+
+       <resources>
+           <resource>
+                 targetPath:指定build资源到哪个目录，默认是base directory
+                               <targetPath>resources</targetPath>
+
+               描述存放资源的目录，该路径相对POM路径 
+                               指定属性文件的目录，build的过程需要找到它，并且将其放到targetPath下，默认的directory是${basedir}/src/main/resources
+               <directory>src/main/resources</directory>
+
+                启用资源过滤 
+               是否使用参数值代替参数名。参数值取自properties元素或者文件里配置的属性，文件在filters元素里列出。 
+               <filtering>true</filtering>
+
+               要被打包的资源列表 
+               <includes>
+                   <include>**/*.properties</include>
+                   <include>**/*.xml</include>
+               </includes>
+
+               排除的资源列表，这些资源不会被打包。如果<include>与<exclude>划定的范围存在冲突，以<exclude>为准 
+                               <excludes>
+                                   <exclude>filter.properties</exclude>
+                               </excludes>
+           </resource>
+       </resources>
+
+单元测试需要用到的的所有资源路径，配置方法与resources类似 
+        <testResources>
+            <testResource>
+                <targetPath />
+                <filtering />
+                <directory />
+                <includes />
+                <excludes />
+            </testResource>
+        </testResources>
+
+        项目源码目录，当构建项目的时候，构建系统会编译目录里的源码。该路径是相对于pom.xml的相对路径。 
+        <sourceDirectory>${basedir}\src\main\java</sourceDirectory>
+
+        项目脚本源码目录，该目录和源码目录不同，绝大多数情况下，该目录下的内容会被拷贝到输出目录(因为脚本是被解释的，而不是被编译的)。 
+        <scriptSourceDirectory>${basedir}\src\main\scripts
+        </scriptSourceDirectory>
+
+        项目单元测试使用的源码目录，当测试项目的时候，构建系统会编译目录里的源码。该路径是相对于pom.xml的相对路径。 
+        <testSourceDirectory>${basedir}\src\test\java</testSourceDirectory>
+
+        被编译过的应用程序class文件存放的目录。 
+        <outputDirectory>${basedir}\target\classes</outputDirectory>
+
+        被编译过的测试class文件存放的目录。 
+        <testOutputDirectory>${basedir}\target\test-classes</testOutputDirectory>
+        
+
+
+项目的一系列构建扩展，它们是一系列build过程中要使用的产品，会包含在running bulid's classpath里面。 
+他们可以开启extensions，也可以通过提供条件来激活plugins。 
+简单来讲，extensions是在build过程被激活的产品 
+      <extensions>
+          例如，通常情况下，程序开发完成后部署到线上Linux服务器，可能需要经历打包、将包文件传到服务器、SSH连上服务器、敲命令启动程序等一系列繁琐的步骤。 
+          实际上这些步骤都可以通过Maven的一个插件 wagon-maven-plugin 来自动完成 
+          下面的扩展插件wagon-ssh用于通过SSH的方式连接远程服务器， 
+          类似的还有支持ftp方式的wagon-ftp插件 
+          <extension>
+              <groupId>org.apache.maven.wagon</groupId>
+              <artifactId>wagon-ssh</artifactId>
+              <version>2.8</version>
+          </extension>
+     </extensions>
+
+
+<!--使用的插件列表 。 -->
+    <plugins>
+        <plugin>
+            <groupId></groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.5.5</version>
+
+            <!--在构建生命周期中执行一组目标的配置。每个目标可能有不同的配置。 -->
+            <executions>
+                <execution>
+
+                    <!--执行目标的标识符，用于标识构建过程中的目标，或者匹配继承过程中需要合并的执行目标 -->
+                    <id>assembly</id>
+
+                    <!--绑定了目标的构建生命周期阶段，如果省略，目标会被绑定到源数据里配置的默认阶段 -->
+                    <phase>package</phase>
+
+                    <!--配置的执行目标 -->
+                    <goals>
+                        <goal>single</goal>
+                    </goals>
+
+                    <!--配置是否被传播到子POM -->
+                    <inherited>false</inherited>
+
+                </execution>
+            </executions>
+
+            <!--作为DOM对象的配置,配置项因插件而异 -->
+            <configuration>
+                <finalName>${finalName}</finalName>
+                <appendAssemblyId>false</appendAssemblyId>
+                <descriptor>assembly.xml</descriptor>
+            </configuration>
+
+            <!--是否从该插件下载Maven扩展（例如打包和类型处理器）， -->
+            <!--由于性能原因，只有在真需要下载时，该元素才被设置成true。 -->
+            <extensions>false</extensions>
+
+            <!--项目引入插件所需要的额外依赖 -->
+            <dependencies>
+                <dependency>...</dependency>
+            </dependencies>
+
+            <!--任何配置是否被传播到子项目 -->
+            <inherited>true</inherited>
+
+        </plugin>
+    </plugins>
+
+    <!--主要定义插件的共同元素、扩展元素集合，类似于dependencyManagement， -->
+    <!--所有继承于此项目的子项目都能使用。该插件配置项直到被引用时才会被解析或绑定到生命周期。 -->
+    <!--给定插件的任何本地配置都会覆盖这里的配置 -->
+    <pluginManagement>
+        <plugins>...</plugins>
+    </pluginManagement>
+————————————————
+原文链接：https://blog.csdn.net/IT__learning/article/details/119823322
+
+   </build>
+
+
+</project>
+
+            ＜scope＞ 元素：全面指南         https://blog.csdn.net/weixin_69174823/article/details/146076557
+        以下是 Maven 中常见的 <scope> 值及其含义：
+        <!--Scope	     描述
+        <!--compile	    默认值。依赖项在编译、测试和运行时都可用，并会包含在最终的构建结果中。
+        <!--provided	依赖项在编译和测试时可用，但不会包含在最终的构建结果中。通常用于容器提供的依赖（如 Servlet API）。
+        <!--runtime	    依赖项在测试和运行时可用，但在编译时不可用。通常用于运行时需要的依赖（如 JDBC 驱动）。
+        <!--test	    依赖项仅在测试时可用，不会包含在最终的构建结果中。通常用于测试框架（如 JUnit）。
+        <!--system	    类似于 provided，但需要显式指定依赖项的路径<systemPath></systemPath>
+        <!--import	    仅用于 <dependencyManagement> 中，用于导入其他 POM 中的依赖管理配置。
+
+        <!--构建优化
+        <!--合理使用 <scope> 可以减少构建包的大小，提高构建效率。例如：
+        <!--使用 provided 避免将容器提供的依赖打包到 WAR 文件中。
+        <!--使用 runtime 避免将运行时依赖包含在编译阶段。
+
+
+
+字段说明
+        1、finalName：build目标文件的名称，默认情况为 ${artifactId}-${version}。
+        2、defaultGoal：执行 build 任务时，如果没有指定目标，将使用的默认值。如上配置，在命令行中执行 mvn，则相当于执行 mvn install。
+        3、directory：build 结果文件的存放目录，默认在 ${basedir}/target 目录。
+        4、filter：定义 *.properties 文件，包含一个 properties 列表，该列表会应用到支持 filter 的 resources 中。也就是说，定义在 filter 的文件中的 name=value 键值对，会在 build 时代替 ${name}
+        值应用到 resources 中。maven 的默认 filter 文件夹为 ${basedir}/src/main/filters。
+        5、resources： 一个 resource 元素的列表。每一个都描述与项目关联的文件是什么和在哪里。
+        6、testResources： 定义和resource类似，只不过在test时使用。
+        7、Project Build 特有的 <…Directory>：往往配置在父项目中，供所有父子项目使用。
+        ————————————————
+        原文链接：https://blog.csdn.net/IT__learning/article/details/119823322
